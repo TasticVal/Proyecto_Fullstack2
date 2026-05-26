@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   db:
     image: mysql:8.0
@@ -7,6 +9,8 @@ services:
       MYSQL_ROOT_PASSWORD: alumno123
     ports:
       - "3306:3306"
+    networks:
+      - colegio-net
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 5s
@@ -17,6 +21,8 @@ services:
     build: ./backend/ms-academico
     ports:
       - "8080:8080"
+    networks:
+      - colegio-net
     depends_on:
       db:
         condition: service_healthy
@@ -29,6 +35,8 @@ services:
     build: ./backend/ms-asistencia
     ports:
       - "8081:8080"
+    networks:
+      - colegio-net
     depends_on:
       db:
         condition: service_healthy
@@ -37,25 +45,44 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: alumno123
 
-  # NUEVO SERVICIO BFF
+  ms-comunicaciones:
+    build: ./backend/ms-comunicaciones
+    ports:
+      - "8083:8080"
+    networks:
+      - colegio-net
+    depends_on:
+      db:
+        condition: service_healthy
+
   bff-service:
     build: ./backend/bff-service
     ports:
       - "8082:8080"
+    networks:
+      - colegio-net
     depends_on:
       ms-academico:
         condition: service_started
       ms-asistencia:
         condition: service_started
+      ms-comunicaciones:
+        condition: service_started
     environment:
-      # El BFF necesita saber dónde están los otros servicios dentro de la red Docker
       URL_ACADEMICO: "http://ms-academico:8080/api/estudiantes"
       URL_ASISTENCIA: "http://ms-asistencia:8080/api/asistencia"
+      URL_COMUNICACIONES: "http://ms-comunicaciones:8080/api/comunicaciones/resumen"
 
   frontend:
     build: ./frontend
     ports:
       - "3000:80"
+    networks:
+      - colegio-net
     depends_on:
       bff-service:
         condition: service_started
+
+networks:
+  colegio-net:
+    driver: bridge
