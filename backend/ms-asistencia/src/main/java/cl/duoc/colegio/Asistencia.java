@@ -5,16 +5,20 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column; // 1. IMPORTANTE: Importar Column
 
 @Entity
-@Table(name = "asistencia")
+@Table(name = "asistencias") // 2. CORREGIDO: Coincide con tu SQL (plural)
 public class Asistencia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    // 3. CORREGIDO: Mapeamos explícitamente el nombre de la columna en SQL
+    @Column(name = "estudiante_id") 
     private Long idEstudiante;
+    
     private String fecha;
     private String estado;
 

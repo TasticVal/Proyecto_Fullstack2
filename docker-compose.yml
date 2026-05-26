@@ -1,4 +1,8 @@
-version: '3.8'
+# Definimos las variables de la base de datos una sola vez
+x-db-env: &db-env
+  SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/db_colegio?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+  SPRING_DATASOURCE_USERNAME: root
+  SPRING_DATASOURCE_PASSWORD: alumno123
 
 services:
   db:
@@ -11,77 +15,63 @@ services:
       - "3306:3306"
     networks:
       - colegio-net
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 5s
       timeout: 5s
       retries: 5
+    restart: unless-stopped
 
   ms-academico:
     build: ./backend/ms-academico
-    ports:
-      - "8080:8080"
-    networks:
-      - colegio-net
+    ports: ["8080:8080"]
+    networks: ["colegio-net"]
     depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/db_colegio?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: alumno123
+      db: { condition: service_healthy }
+    environment: *db-env
+    restart: unless-stopped
 
   ms-asistencia:
     build: ./backend/ms-asistencia
-    ports:
-      - "8081:8080"
-    networks:
-      - colegio-net
+    ports: ["8081:8080"]
+    networks: ["colegio-net"]
     depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/db_colegio?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: alumno123
+      db: { condition: service_healthy }
+    environment: *db-env
+    restart: unless-stopped
 
   ms-comunicaciones:
     build: ./backend/ms-comunicaciones
-    ports:
-      - "8083:8080"
-    networks:
-      - colegio-net
+    ports: ["8083:8080"]
+    networks: ["colegio-net"]
     depends_on:
-      db:
-        condition: service_healthy
+      db: { condition: service_healthy }
+    environment: *db-env
+    restart: unless-stopped
 
   bff-service:
     build: ./backend/bff-service
-    ports:
-      - "8082:8080"
-    networks:
-      - colegio-net
+    ports: ["8082:8080"]
+    networks: ["colegio-net"]
     depends_on:
-      ms-academico:
-        condition: service_started
-      ms-asistencia:
-        condition: service_started
-      ms-comunicaciones:
-        condition: service_started
+      ms-academico: { condition: service_started }
+      ms-asistencia: { condition: service_started }
+      ms-comunicaciones: { condition: service_started }
     environment:
       URL_ACADEMICO: "http://ms-academico:8080/api/estudiantes"
       URL_ASISTENCIA: "http://ms-asistencia:8080/api/asistencia"
       URL_COMUNICACIONES: "http://ms-comunicaciones:8080/api/comunicaciones/resumen"
+    restart: unless-stopped
 
   frontend:
     build: ./frontend
-    ports:
-      - "3000:80"
-    networks:
-      - colegio-net
+    ports: ["3000:80"]
+    networks: ["colegio-net"]
     depends_on:
-      bff-service:
-        condition: service_started
+      bff-service: { condition: service_started }
+    restart: unless-stopped
 
 networks:
   colegio-net:

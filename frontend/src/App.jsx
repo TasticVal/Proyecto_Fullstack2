@@ -1,80 +1,59 @@
 import { useState, useEffect } from 'react';
 
-// Perfil Editable con lógica de interactividad
+// ... (PerfilEditable se queda igual)
 const PerfilEditable = ({ user }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState(user);
-
-  const toggleEdit = () => {
-    setIsEditing(!isEditing);
-  };
-
+  const toggleEdit = () => setIsEditing(!isEditing);
   return (
     <div className="card shadow-sm border-0 p-4 rounded-3 h-100">
       <div className="text-center mb-4 position-relative">
-        <img 
-          src={formData.avatar} 
-          alt="Avatar" 
-          className="rounded-circle border border-2 shadow-sm" 
-          style={{ width: '120px', height: '120px', objectFit: 'cover' }}
-        />
-        {/* Ícono de edición que reacciona al estado */}
+        <img src={formData.avatar} alt="Avatar" className="rounded-circle border border-2 shadow-sm" style={{ width: '120px', height: '120px', objectFit: 'cover' }} />
         <div className="position-absolute" style={{ bottom: '10px', left: '60%' }}>
           <i className={`bi ${isEditing ? 'bi-check-circle-fill text-success' : 'bi-pencil-fill text-dark'} bg-white p-2 rounded-circle shadow-sm`}></i>
         </div>
       </div>
-      
       <div className="mb-3">
         <div className="input-group">
-          <input 
-            type="text" 
-            className={`form-control ${isEditing ? 'border-primary shadow-sm' : 'bg-light'}`} 
-            value={formData.nombre} 
-            readOnly={!isEditing}
-            onChange={(e) => setFormData({...formData, nombre: e.target.value})}
-          />
+          <input type="text" className={`form-control ${isEditing ? 'border-primary shadow-sm' : 'bg-light'}`} value={formData.nombre} readOnly={!isEditing} onChange={(e) => setFormData({...formData, nombre: e.target.value})} />
           <span className="input-group-text bg-light border-0"><i className="bi bi-person"></i></span>
         </div>
       </div>
       <div className="mb-3">
         <div className="input-group">
-          <input 
-            type="text" 
-            className={`form-control ${isEditing ? 'border-primary shadow-sm' : 'bg-light'}`} 
-            value={formData.rut} 
-            readOnly={!isEditing}
-            onChange={(e) => setFormData({...formData, rut: e.target.value})}
-          />
+          <input type="text" className={`form-control ${isEditing ? 'border-primary shadow-sm' : 'bg-light'}`} value={formData.rut} readOnly={!isEditing} onChange={(e) => setFormData({...formData, rut: e.target.value})} />
           <span className="input-group-text bg-light border-0"><i className="bi bi-card-text"></i></span>
         </div>
       </div>
-      
-      {/* Botón con efecto de cambio */}
-      <button 
-        className={`btn w-100 mt-2 ${isEditing ? 'btn-success' : 'btn-outline-dark'}`} 
-        onClick={toggleEdit}
-      >
+      <button className={`btn w-100 mt-2 ${isEditing ? 'btn-success' : 'btn-outline-dark'}`} onClick={toggleEdit}>
         {isEditing ? <><i className="bi bi-check-lg"></i> Guardar Cambios</> : <><i className="bi bi-pencil"></i> Editar Perfil</>}
       </button>
     </div>
   );
 };
 
-// ... (El resto de tus componentes: EstudianteTable y ComunicacionCard se mantienen igual)
-const EstudianteTable = ({ estudiantes }) => (
-  <div className="card shadow-sm border-0 p-0 overflow-hidden">
+// ... (EstudianteTable se queda igual)
+const EstudianteTable = ({ estudiantes = [] }) => (
+  <div className="card shadow-sm border-0 p-0 overflow-hidden mb-4">
     <div className="card-header bg-dark text-white py-3">
       <h5 className="mb-0">ESTUDIANTES INSCRITOS</h5>
     </div>
     <table className="table table-hover mb-0">
-      <thead className="table-light">
-        <tr><th>ID</th><th>Nombre</th><th>RUT</th></tr>
-      </thead>
-      <tbody>
-        {estudiantes.map(e => (
-          <tr key={e.id}><td>{e.id}</td><td>{e.nombre}</td><td>{e.rut}</td></tr>
-        ))}
-      </tbody>
+      <thead className="table-light"><tr><th>ID</th><th>Nombre</th><th>RUT</th></tr></thead>
+      <tbody>{estudiantes.map(e => <tr key={e.id}><td>{e.id}</td><td>{e.nombre}</td><td>{e.rut}</td></tr>)}</tbody>
+    </table>
+  </div>
+);
+
+// NUEVO: Componente básico para Asistencias
+const AsistenciaTable = ({ asistencias = [] }) => (
+  <div className="card shadow-sm border-0 p-0 overflow-hidden">
+    <div className="card-header bg-secondary text-white py-3">
+      <h5 className="mb-0">ASISTENCIAS</h5>
+    </div>
+    <table className="table table-hover mb-0">
+      <thead className="table-light"><tr><th>Est. ID</th><th>Fecha</th><th>Estado</th></tr></thead>
+      <tbody>{asistencias.map((a, i) => <tr key={i}><td>{a.idEstudiante}</td><td>{a.fecha}</td><td>{a.estado}</td></tr>)}</tbody>
     </table>
   </div>
 );
@@ -89,7 +68,8 @@ const ComunicacionCard = ({ com }) => (
 );
 
 function App() {
-  const [data, setData] = useState({ estudiantes: [], comunicaciones: [] });
+  // Inicializamos con asistencias: []
+  const [data, setData] = useState({ estudiantes: [], comunicaciones: [], asistencias: [] });
   const [loading, setLoading] = useState(true);
   const [userProfile] = useState({ 
     nombre: 'Valeria González', 
@@ -121,6 +101,7 @@ function App() {
           
           <div className="col-md-5">
             <EstudianteTable estudiantes={data.estudiantes} />
+            <AsistenciaTable asistencias={data.asistencias} />
           </div>
 
           <div className="col-md-4">

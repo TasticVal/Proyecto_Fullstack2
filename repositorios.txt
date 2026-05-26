@@ -1,0 +1,19 @@
+PROYECTO FINAL: COLEGIO FULLSTACK - ENLACES DE REPOSITORIOS
+
+1. Repositorio Principal: https://github.com/TasticVal/Proyecto_Fullstack2/
+   Descripción: Proyecto completo, incluye docker-compose.yml y estructura multi-contenedor.
+
+2. Frontend: https://github.com/Kmorales212/proyecto_fullstack2_frontend
+   Descripción: Interfaz React + Vite.
+
+3. BFF (Backend for Frontend):https://github.com/Kmorales212/proyecto_fullstack2_bff.git
+   Descripción: Orquestador de servicios.
+
+4. Microservicio Académico: https://github.com/Kmorales212/proyecto_fullstack2_micro_servicio_academico.git
+   Descripción: Gestión de alumnos y registros académicos.
+
+5. Microservicio Asistencia:https://github.com/Kmorales212/proyecto_fullstack2_micro_servicio_asistencia.git
+   Descripción: Control de asistencias.
+
+6. Microservicio Comunicaciones: https://github.com/Kmorales212/proyecto_fullstack2_micro_servicio_comunicaciones.git
+   Descripción: Gestión de avisos y notificaciones.

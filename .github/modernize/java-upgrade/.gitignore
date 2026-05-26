@@ -1,0 +1,43 @@
+# --- Directorios de Node / Frontend ---
+node_modules/
+dist/
+.vite/
+npm-debug.log
+yarn-error.log
+
+# --- Java / Maven / Spring Boot ---
+target/
+bin/
+*.class
+*.jar
+*.war
+*.ear
+.classpath
+.project
+.settings/
+
+# --- Cobertura de código y Tests ---
+coverage/
+.nyc_output/
+
+# --- Configuraciones de IDE (No compartir) ---
+.idea/
+.vscode/
+*.iml
+
+# --- Sistemas Operativos ---
+.DS_Store
+Thumbs.db
+
+# --- Seguridad y Variables de Entorno (CRÍTICO) ---
+.env
+.env.local
+*.secret
+
+# --- Logs y temporales ---
+*.log
+*.tmp
+temp/
+*~
+*.bak
+*.old
