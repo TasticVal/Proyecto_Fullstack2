@@ -1,0 +1,5 @@
+cl\duoc\colegio\MsAsistenciaApplication.class
+cl\duoc\colegio\AsistenciaController.class
+cl\duoc\colegio\Asistencia.class
+cl\duoc\colegio\AsistenciaRepository.class
+cl\duoc\colegio\WebConfig.class

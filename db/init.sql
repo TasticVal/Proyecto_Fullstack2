@@ -1,0 +1,8 @@
+CREATE DATABASE IF NOT EXISTS db_colegio;
+USE db_colegio;
+
+CREATE TABLE IF NOT EXISTS estudiantes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    rut VARCHAR(12) NOT NULL
+);

@@ -1,0 +1,61 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_DATABASE: db_colegio
+      MYSQL_ROOT_PASSWORD: alumno123
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  ms-academico:
+    build: ./backend/ms-academico
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/db_colegio?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: alumno123
+
+  ms-asistencia:
+    build: ./backend/ms-asistencia
+    ports:
+      - "8081:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/db_colegio?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: alumno123
+
+  # NUEVO SERVICIO BFF
+  bff-service:
+    build: ./backend/bff-service
+    ports:
+      - "8082:8080"
+    depends_on:
+      ms-academico:
+        condition: service_started
+      ms-asistencia:
+        condition: service_started
+    environment:
+      # El BFF necesita saber dónde están los otros servicios dentro de la red Docker
+      URL_ACADEMICO: "http://ms-academico:8080/api/estudiantes"
+      URL_ASISTENCIA: "http://ms-asistencia:8080/api/asistencia"
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      bff-service:
+        condition: service_started
