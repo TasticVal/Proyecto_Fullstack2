@@ -1,19 +1,27 @@
-PROYECTO FINAL: COLEGIO FULLSTACK - ENLACES DE REPOSITORIOS
+======================================================
+ PROYECTO FULLSTACK: DASHBOARD INTEGRAL DE GESTIÓN
+======================================================
 
-1. Repositorio Principal: https://github.com/TasticVal/Proyecto_Fullstack2/
-   Descripción: Proyecto completo, incluye docker-compose.yml y estructura multi-contenedor.
+1. Repositorio Principal (Orquestación):
+   https://github.com/TasticVal/Proyecto_Fullstack2/
 
-2. Frontend: https://github.com/Kmorales212/proyecto_fullstack2_frontend
-   Descripción: Interfaz React + Vite.
+2. Frontend (React + Vite):
+   https://github.com/Kmorales212/proyecto_fullstack2_frontend
 
-3. BFF (Backend for Frontend):https://github.com/Kmorales212/proyecto_fullstack2_bff.git
-   Descripción: Orquestador de servicios.
+3. BFF (Backend for Frontend):
+   https://github.com/Kmorales212/proyecto_fullstack2_bff.git
 
-4. Microservicio Académico: https://github.com/Kmorales212/proyecto_fullstack2_micro_servicio_academico.git
-   Descripción: Gestión de alumnos y registros académicos.
+4. Microservicio Académico:
+   https://github.com/Kmorales212/proyecto_fullstack2_micro_servicio_academico.git
 
-5. Microservicio Asistencia:https://github.com/Kmorales212/proyecto_fullstack2_micro_servicio_asistencia.git
-   Descripción: Control de asistencias.
+5. Microservicio Asistencia:
+   https://github.com/Kmorales212/proyecto_fullstack2_micro_servicio_asistencia.git
 
-6. Microservicio Comunicaciones: https://github.com/Kmorales212/proyecto_fullstack2_micro_servicio_comunicaciones.git
-   Descripción: Gestión de avisos y notificaciones.
+6. Microservicio Comunicaciones:
+   https://github.com/Kmorales212/proyecto_fullstack2_micro_servicio_comunicaciones.git
+
+------------------------------------------------------
+RESPONSABLES DE INFRAESTRUCTURA Y GESTIÓN:
+- Valeria Nunez
+- Kevin Morales
+======================================================
