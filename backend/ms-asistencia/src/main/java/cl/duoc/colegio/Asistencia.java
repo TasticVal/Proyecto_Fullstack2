@@ -5,17 +5,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Column; // 1. IMPORTANTE: Importar Column
+import jakarta.persistence.Column;
 
 @Entity
-@Table(name = "asistencias") // 2. CORREGIDO: Coincide con tu SQL (plural)
+@Table(name = "asistencias")
 public class Asistencia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    // 3. CORREGIDO: Mapeamos explícitamente el nombre de la columna en SQL
     @Column(name = "estudiante_id") 
     private Long idEstudiante;
     
@@ -24,6 +23,12 @@ public class Asistencia {
 
     // Constructor vacío obligatorio para JPA
     public Asistencia() {}
+
+    // Constructor con parámetros (necesario para las pruebas unitarias)
+    public Asistencia(String estado, String fecha) {
+        this.estado = estado;
+        this.fecha = fecha;
+    }
 
     // Getters y Setters
     public Long getId() { return id; }
