@@ -23,6 +23,12 @@ public class ComunicacionesController {
         return repository.findAll();
     }
 
+    // 👉 NUEVO ENDPOINT PARA EL BFF
+    @GetMapping("/resumen")
+    public List<Comunicaciones> getResumen() {
+        return repository.findAll();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Comunicaciones> getById(@PathVariable Long id) {
         Optional<Comunicaciones> com = repository.findById(id);
